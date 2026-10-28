@@ -148,7 +148,9 @@ final class MacLink: ObservableObject {
         let id = UUID().uuidString
         packet.callID = id
         waiting[id] = done
-        DispatchQueue.main.asyncAfter(deadline: .now() + 12) { [weak self] in self?.waiting.removeValue(forKey: id)?(nil) }
+        let timeout: Double = packet.command == "transcribe" ? 320 :
+            (packet.command == "tool" && packet.tool == "web_research" ? 110 : 60)
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { [weak self] in self?.waiting.removeValue(forKey: id)?(nil) }
         link.send(packet)
     }
 

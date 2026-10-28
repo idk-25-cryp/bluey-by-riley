@@ -47,7 +47,7 @@ struct BlueyAppView: View {
                             Circle()
                                 .fill(link.connected ? Color(hex: 0x5BE49B) : Color(hex: Palette.inkSoft).opacity(0.5))
                                 .frame(width: 7, height: 7)
-                            Text(link.connected ? (link.macName ?? link.currentMac ?? "Mac") : "Looking for your Mac")
+                            Text(link.connected ? (link.macName ?? link.currentMac ?? "Computer") : "Looking for your computer")
                                 .font(.plexSans(12))
                                 .foregroundStyle(Color(hex: Palette.inkSoft))
                                 .lineLimit(1)
@@ -56,7 +56,7 @@ struct BlueyAppView: View {
                 }
 
                 Button("Focus sessions", action: openFocus).buttonStyle(.borderedProminent)
-                Button("Pair Mac (QR)", action: pairMac).buttonStyle(.bordered)
+                Button("Pair computer (QR)", action: pairMac).buttonStyle(.bordered)
 
                 Button {
                     let starting = live.state == .asleep
@@ -249,7 +249,7 @@ struct SessionDetailView: View {
         } ?? "\(root)/ (the folder starting \(session.started.formatted(.iso8601.year().month().day())))"
         let prompt = """
         I recorded a meeting with my Bluey app on \(session.started.formatted(date: .complete, time: .shortened)). \
-        The notes are on my Mac in \(path)
+        The notes are on my computer in \(path)
 
         - notes.md: the full transcript with timestamps and speaker labels (A, B, … per five-minute chunk), plus \
         my questions to Bluey, its replies and research reports. Start here.

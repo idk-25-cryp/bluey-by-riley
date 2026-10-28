@@ -119,7 +119,7 @@ final class LiveVoice: NSObject, ObservableObject {
                 requestToken { token in
                     DispatchQueue.main.async {
                         guard self.state == .waking else { return }
-                        guard let token else { self.feedback = "Voice could not connect. Check the Mac and OpenAI key."; self.onCaption?(self.feedback, true); self.sleep(); return }
+                        guard let token else { self.feedback = "Voice could not connect. Check the computer and OpenAI key."; self.onCaption?(self.feedback, true); self.sleep(); return }
                         self.connect(token)
                     }
                 }
@@ -464,7 +464,7 @@ final class LiveVoice: NSObject, ObservableObject {
                     }
                 }
             }
-            if let runTool { runTool(name, arguments, finish) } else { finish("The Mac isn't connected.", nil) }
+            if let runTool { runTool(name, arguments, finish) } else { finish("The computer isn't connected.", nil) }
         }
     }
 
@@ -484,7 +484,9 @@ final class LiveVoice: NSObject, ObservableObject {
         if engine.isRunning { engine.stop() }
         #if os(iOS)
         let session = AVAudioSession.sharedInstance()
-        try session.setCategory(.playAndRecord, mode: .voiceChat, options: [.defaultToSpeaker, .allowBluetoothHFP])
+        // The original HFP option name requires an iOS 26 SDK. This older name has
+        // the same hands-free Bluetooth behavior and also compiles with Xcode 16.
+        try session.setCategory(.playAndRecord, mode: .voiceChat, options: [.defaultToSpeaker, .allowBluetooth])
         try session.setActive(true)
         #endif
 

@@ -13,19 +13,19 @@ struct PairingView: View {
                 Text("Your little focus friend")
                     .font(.fredoka(32))
                     .foregroundStyle(Color(hex: 0xF4F1FA))
-                Text("Open Bluey's Mac menu > Pair iPhone (QR). Scan once, then we'll reconnect securely on the same Wi-Fi.")
+                Text("Open Bluey on your computer > Pair iPhone (QR). Scan once, then we'll reconnect securely on the same Wi-Fi.")
                     .font(.plexSans(16))
                     .foregroundStyle(Color(hex: Palette.inkSoft))
                     .frame(maxWidth: 380, alignment: .leading)
                 HStack(spacing: 10) {
                     ProgressView().tint(Color(hex: Palette.berry1))
-                    Text("Looking for your Mac")
+                    Text("Looking for your computer")
                         .font(.plexMono(13))
                         .foregroundStyle(Color(hex: Palette.inkSoft))
                 }
                 .padding(.top, 4)
                 Button(action: onPlay) {
-                    Text("Pair Mac (scan QR)")
+                    Text("Pair computer (scan QR)")
                         .font(.plexSans(15).weight(.semibold))
                         .foregroundStyle(Color(hex: 0xF4F1FA))
                         .padding(.horizontal, 18)

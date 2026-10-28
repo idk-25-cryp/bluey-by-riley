@@ -30,7 +30,7 @@ struct FocusFaceHUD: View {
             HStack(alignment: .bottom, spacing: 12) {
                 HStack(spacing: 2) {
                     if !link.connected {
-                        icon("qrcode.viewfinder", label: "Pair Mac", action: pair)
+                        icon("qrcode.viewfinder", label: "Pair computer", action: pair)
                     } else if let session = focus.current, session.status != .ended {
                         icon(session.status == .running ? "pause.fill" : "play.fill",
                              label: session.status == .running ? "Pause focus" : "Resume focus") {
@@ -99,7 +99,7 @@ struct FocusFaceHUD: View {
         }
     }
     private var status: String {
-        guard link.connected else { return "Pair your Mac to focus together" }
+        guard link.connected else { return "Pair your computer to focus together" }
         guard let session = focus.current, session.status != .ended else { return "Hold Bluey and describe a task" }
         guard focus.fresh else { return "Connection lost · monitoring will pause" }
         if session.status == .paused { return "Paused" }
@@ -162,7 +162,7 @@ struct FocusDashboard: View {
                             .accessibilityIdentifier("startFocus")
                     }
                     if !focus.message.isEmpty { Text(focus.message).font(.plexSans(13)).foregroundStyle(.secondary) }
-                    Text("While focusing, Bluey sends your main Mac display, task, elapsed time, idle duration and recent check results to OpenAI every \(focus.developerMode ? 10 : 30) real seconds. Brief detours are fine. Stillness isn't distraction.")
+                    Text("While focusing, Bluey sends your main computer display, task, elapsed time, idle duration and recent check results to OpenAI every \(focus.developerMode ? 10 : 30) real seconds. Brief detours are fine. Stillness isn't distraction.")
                         .font(.plexSans(13)).foregroundStyle(.secondary)
                     Text("Screen Recording is required on Mac; microphone is needed for voice. Screenshots aren't saved by Bluey. Pause, end, lock, sleep or disconnect stops capture. Resume is always manual. OpenAI processing follows your API account's data controls.")
                         .font(.plexSans(13)).foregroundStyle(.secondary)

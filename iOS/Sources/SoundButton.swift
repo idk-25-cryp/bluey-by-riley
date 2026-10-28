@@ -94,7 +94,7 @@ struct SoundButton: View {
                 }
             }
             if !link.connected {
-                Text("Connect to your Mac to talk to him.")
+                Text("Connect to your computer to talk to him.")
                     .font(.plexSans(12))
                     .foregroundStyle(Color(hex: Palette.inkSoft))
             }

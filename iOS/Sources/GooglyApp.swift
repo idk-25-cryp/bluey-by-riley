@@ -128,7 +128,7 @@ struct RootView: View {
         }
         live.runTool = { [link] name, arguments, done in
             link.request(Packet(command: "tool", tool: name, text: arguments)) { reply in
-                done(reply?.text ?? "The Mac didn't answer.", reply?.image)
+                done(reply?.text ?? "The computer didn't answer.", reply?.image)
             }
         }
         live.onSessionStart = { [store] in
