@@ -1,0 +1,41 @@
+name: Build iPhone IPA for Sideloadly
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/build-ios-ipa.yml'
+permissions:
+  contents: read
+jobs:
+  ios:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build unsigned ARM64 IPA
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodebuild -version
+          xcodebuild -project GooglyEyes.xcodeproj -target GooglyEyes \
+            -configuration Release -sdk iphoneos \
+            CONFIGURATION_BUILD_DIR="$RUNNER_TEMP/bluey-products" \
+            OBJROOT="$RUNNER_TEMP/bluey-objects" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" DEVELOPMENT_TEAM="" \
+            ONLY_ACTIVE_ARCH=NO ARCHS=arm64 build
+          APP="$RUNNER_TEMP/bluey-products/Bluey.app"
+          test -f "$APP/Bluey"
+          xcrun lipo -verify_arch arm64 "$APP/Bluey"
+          mkdir -p "$RUNNER_TEMP/bluey-package/Payload" build/ios
+          ditto "$APP" "$RUNNER_TEMP/bluey-package/Payload/Bluey.app"
+          (cd "$RUNNER_TEMP/bluey-package" && /usr/bin/zip -q -r "$GITHUB_WORKSPACE/build/ios/Bluey-unsigned.ipa" Payload)
+          (cd build/ios && shasum -a 256 Bluey-unsigned.ipa > SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Bluey-iPhone-Sideloadly
+          path: |
+            build/ios/Bluey-unsigned.ipa
+            build/ios/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 14
