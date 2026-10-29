@@ -26,7 +26,7 @@ jobs:
             ONLY_ACTIVE_ARCH=NO ARCHS=arm64 build
           APP="$RUNNER_TEMP/bluey-products/Bluey.app"
           test -f "$APP/Bluey"
-          xcrun lipo -verify_arch arm64 "$APP/Bluey"
+          xcrun lipo "$APP/Bluey" -verify_arch arm64
           mkdir -p "$RUNNER_TEMP/bluey-package/Payload" build/ios
           ditto "$APP" "$RUNNER_TEMP/bluey-package/Payload/Bluey.app"
           (cd "$RUNNER_TEMP/bluey-package" && /usr/bin/zip -q -r "$GITHUB_WORKSPACE/build/ios/Bluey-unsigned.ipa" Payload)
